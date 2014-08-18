@@ -1,3 +1,10 @@
+/* main.qml
+ *
+ * Copyright (C) 2014 Paulo Pinheiro
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
 import QtQuick 2.2
 import Bacon2D 1.0
 
