@@ -6,28 +6,32 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
-import QtQuick 2.0
+import QtQuick 2.3
 import Bacon2D 1.0
 
-Entity{
-    id:floor
-    property alias fixture: floorFixture
-    implicitWidth: scene.width
-    implicitHeight: 20
-    bodyType: Entity.Static
-    fixtures: Box {
-        id:floorFixture
-        anchors.fill: parent
+Item{
+    id:iai
+    property alias world: body.world
+    signal touchedFloor(var other)
+    transformOrigin: Item.TopLeft
+
+    BoxBody{
+        id:body
+        target: iai
+        bodyType: Body.Static
+        width:iai.width; height:iai.height
+        density:1
         friction: 1
-        density: 1
-        categories: Box.Category2
+        sensor:false
+        onBeginContact: touchedFloor(other)
     }
-    anchors{
-        left: parent.left
-        bottom: parent.bottom
-    }
-    Rectangle{
-        anchors.fill: parent
-        color:"green"
+
+    ImageLayer{
+        id: layer1
+        source: "img/land.png"
+        width:iai.width; height:iai.height
+        behavior: ScrollBehavior {
+            horizontalStep: -2
+        }
     }
 }

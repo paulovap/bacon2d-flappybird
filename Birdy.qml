@@ -6,59 +6,62 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
-import QtQuick 2.0
+import QtQuick 2.3
 import Bacon2D 1.0
 
 Entity{
-    id:piggy
-    property bool jumping: false
-    property Box ground
+    id:root
 
-    implicitWidth:20;
-    implicitHeight:20;
+    property alias world: circleBody.world
+    width:50;height:50
+    transformOrigin: Item.TopLeft
 
-    signal hit
 
-    states: [
-        State {
-            name: "jumping"
-            PropertyChanges {
-                target: piggy
-                jumping:true
-
-            }
-        }
-    ]
-
-    //physics
-    fixedRotation: true
-    bodyType: Entity.Dynamic
-    fixtures:[
-        Box {
-            id:body
-            anchors.fill: parent
-            density: 2
-            friction: 0
-
-            onBeginContact: {
-                if(other === ground)
-                    piggy.state = ""
-                else
-                    hit(other)
-
-            }
-        }
-    ]
-
-    //Drawing
-    Rectangle{ anchors.fill:parent; color:"red"}
+    BoxBody{
+        id:circleBody
+        target: root
+        width: root.width - 20
+        height: root.height - 20
+        density: 0.5
+        friction: 1
+        restitution: 0.2
+        fixedRotation: true
+        bodyType: Body.Dynamic
+    }
 
     //Actions
     function jump(){
-//        if(state === "jumping")
-//            return;
         state = "jumping"
-        piggy.applyForce(Qt.point(0,-400),
-                        getWorldCenter());
+        circleBody.applyForce(Qt.point(0,-400),
+                        circleBody.getWorldCenter());
+    }
+
+    Sprite {
+        id: birdy
+        anchors.fill: parent
+        property bool jumping: false
+
+        animation: "flying"
+
+        states: [
+            State {
+                name: "jumping"
+                PropertyChanges {
+                    target: birdy
+                    jumping:true
+
+                }
+            }
+        ]
+
+        animations: [
+            SpriteAnimation {
+                name: "flying"
+                source: "img/bird_sprite.png"
+                frames: 3
+                duration: 400
+                loops: Animation.Infinite
+            }
+        ]
     }
 }

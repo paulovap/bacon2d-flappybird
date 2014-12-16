@@ -11,8 +11,8 @@ Project {
         directory: "."
     }
     ImageFiles {
-        directory: "."
+        directory: "img"
     }
     /* List of plugin directories passed to QML runtime */
-    importPaths: [ "imports" ] // <- Bacon2D folder goes here!
+    importPaths: [ "imports", "Bacon2D" ] // <- Bacon2D folder goes here!
 }

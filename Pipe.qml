@@ -9,78 +9,42 @@
 import QtQuick 2.0
 import Bacon2D 1.0
 
-Entity {
-    property int gapY
-    property int gapHeight
-    y:0
-    implicitHeight: parent.height
-    implicitWidth: 20
+PhysicsEntity {
+    property bool headUp: true
+    clip:true
+    width: imageHead.width
+
     fixedRotation: true
-    bodyType: Entity.Kinematic
 
     //physics
     fixtures:[
         Box{
-            id:top_pipe_body
-
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            width: parent.width - 2
-            height: gapY - top_pipe_head.height //
+            id:boxPipeHead
+            x:0; width: 50;height: 5
+            y: headUp? 0 : parent.height - 5
             density: 2
             friction: 0
-            Rectangle{
-                anchors.fill: parent
-                color:'green'
-            }
-        },
-        Box{
-            anchors.top: top_pipe_body.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            id:top_pipe_head
-            height: 5
-            width: parent.width
-            density: 2
-            friction: 0
-            Rectangle{
-                anchors.fill: parent
-                color:'green'
-            }
         },
 
         Box{
-            id:bottom_pipe_head
-
-            anchors.bottom: bottom_pipe_body.top
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            height: 5
-            width: parent.width
-            density: 2
-            friction: 0
-            Rectangle{
-                anchors.fill: parent
-                color:'green'
-            }
-        },
-
-        Box{
-            id:bottom_pipe_body
-
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            width: parent.width - 5
-            height: parent.height - top_pipe_head.height - gapY - gapHeight //
+            id:boxPipeBody
             density: 2
             friction: 0
             categories: Box.Category1
-            Rectangle{
-                anchors.fill: parent
-                color:'green'
-            }
         }
 
     ]
+    Image{
+        id:pipeBody
+        y: headUp ? imageHead.height : 0
+        height:parent.height - imageHead.height
+        source: "img/pipe.png"
+        fillMode: Image.Tile
+   }
+    Image{
+        id:imageHead
+        x:0; y: headUp ? 0 : parent.height - height;
+        source: headUp ? "img/pipe_up.png" : "img/pipe_down.png"
+    }
+
 }
