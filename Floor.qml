@@ -11,8 +11,10 @@ import Bacon2D 1.0
 
 Item{
     id:iai
+    property alias scene: layer1.scene
     property alias world: body.world
     signal touchedFloor(var other)
+    visible:true
     transformOrigin: Item.TopLeft
 
     BoxBody{
