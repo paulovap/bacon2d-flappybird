@@ -30,6 +30,8 @@ Item{
 
     ImageLayer{
         id: layer1
+        anchors.fill: iai
+
         source: "img/land.png"
         width:iai.width; height:iai.height
         behavior: ScrollBehavior {

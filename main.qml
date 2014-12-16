@@ -66,7 +66,8 @@ Game{
             id:floor
             width: parent.width
             height:112
-            anchors.bottom:parent.bottom
+            anchors.left: scene.left
+            anchors.bottom: scene.bottom
             world: scene.world
             scene:scene
             onTouchedFloor: console.log("Touched" + other)
