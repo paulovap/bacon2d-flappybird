@@ -37,8 +37,6 @@ Entity{
 
     Sprite {
         id: birdy
-
-        running:true
         anchors.fill: parent
         property bool jumping: false
 
@@ -59,7 +57,8 @@ Entity{
             SpriteAnimation {
                 name: "flying"
                 source: "img/bird_sprite.png"
-                frames: 2
+                frames: 3
+                running:true
                 duration: 400
                 loops: Animation.Infinite
             }

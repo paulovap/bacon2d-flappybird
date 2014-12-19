@@ -34,8 +34,6 @@ Game{
         physics: true
         gravity: Qt.point(0,9.8)
         pixelsPerMeter:18
-        Component.onCompleted: scene.running = false
-
         running:false
 
         Rectangle{
