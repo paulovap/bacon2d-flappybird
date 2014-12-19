@@ -10,27 +10,24 @@ import QtQuick 2.0
 import Bacon2D 1.0
 
 PhysicsEntity {
+    id:root
     property bool headUp: true
-    clip:true
-    width: imageHead.width
+
+    signal touched(var other)
+
+    width: pipeBody.width
 
     fixedRotation: true
-
+    bodyType: Body.Static
     //physics
     fixtures:[
         Box{
-            id:boxPipeHead
-            x:0; width: 50;height: 5
-            y: headUp? 0 : parent.height - 5
-            density: 2
-            friction: 0
-        },
-
-        Box{
-            id:boxPipeBody
-            density: 2
-            friction: 0
-            categories: Box.Category1
+            id:boxBody
+            width: root.width; height: root.height
+            density:1
+            friction: 1
+            sensor:false
+            onBeginContact: root.touched(other)
         }
 
     ]
@@ -43,7 +40,7 @@ PhysicsEntity {
    }
     Image{
         id:imageHead
-        x:0; y: headUp ? 0 : parent.height - height;
+        y: headUp ? 0 : parent.height - height;
         source: headUp ? "img/pipe_up.png" : "img/pipe_down.png"
     }
 

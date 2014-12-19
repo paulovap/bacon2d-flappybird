@@ -11,14 +11,13 @@ import Bacon2D 1.0
 
 Entity{
     id:root
-
-    property alias world: circleBody.world
     width:50;height:50
     transformOrigin: Item.TopLeft
 
 
     BoxBody{
         id:circleBody
+        world: root.scene.world
         target: root
         width: root.width - 20
         height: root.height - 20
@@ -32,16 +31,18 @@ Entity{
     //Actions
     function jump(){
         state = "jumping"
-        circleBody.applyForce(Qt.point(0,-400),
+        circleBody.applyLinearImpulse(Qt.point(0,-4),
                         circleBody.getWorldCenter());
     }
 
     Sprite {
         id: birdy
+
+        running:true
         anchors.fill: parent
         property bool jumping: false
 
-        animation: "flying"
+        animation:  "flying"
 
         states: [
             State {
@@ -58,7 +59,7 @@ Entity{
             SpriteAnimation {
                 name: "flying"
                 source: "img/bird_sprite.png"
-                frames: 3
+                frames: 2
                 duration: 400
                 loops: Animation.Infinite
             }

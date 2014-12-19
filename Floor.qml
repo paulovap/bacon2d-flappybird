@@ -10,32 +10,38 @@ import QtQuick 2.3
 import Bacon2D 1.0
 
 Item{
-    id:iai
-    property alias scene: layer1.scene
-    property alias world: body.world
+    id:floor
+
+    property Scene scene
+
     signal touchedFloor(var other)
+
     visible:true
-    transformOrigin: Item.TopLeft
 
     BoxBody{
         id:body
-        target: iai
+        target: floor
+        world: scene.world
         bodyType: Body.Static
-        width:iai.width; height:iai.height
+        width:floor.width; height:floor.height
         density:1
         friction: 1
         sensor:false
         onBeginContact: touchedFloor(other)
     }
 
-    ImageLayer{
-        id: layer1
-        anchors.fill: iai
-
-        source: "img/land.png"
-        width:iai.width; height:iai.height
-        behavior: ScrollBehavior {
-            horizontalStep: -2
+    InfiniteScrollItem{
+        id:scrollItem
+        Image{
+            width: floor.width; height: floor.height
+            source: "img/land.png"
+            fillMode: Image.Tile
         }
+    }
+    Timer{
+        running:scene.running
+        interval: 16
+        repeat: true
+        onTriggered: scrollItem.offsetX +=0.3
     }
 }

@@ -34,43 +34,64 @@ Game{
         physics: true
         gravity: Qt.point(0,9.8)
         pixelsPerMeter:18
-        debug:true
+        Component.onCompleted: scene.running = false
+
+        running:false
+
         Rectangle{
             anchors.fill: parent
             color:"#4ec0ca"
         }
 
-        Image{
-           width:parent.width
-           scale:1
-           anchors{
-               bottom:parent.bottom; bottomMargin: floor.height;
-               horizontalCenter: parent.horizontalCenter}
-           source: "img/sky.png"
-           fillMode: Image.Tile
+        InfiniteScrollItem{
+            id:scrollItem
+            anchors{
+                bottom:parent.bottom; bottomMargin: floor.height;
+                horizontalCenter: parent.horizontalCenter}
+            Image{
+                scale:1
+                width:scene.width
+                source: "img/sky.png"
+                fillMode: Image.Tile
+                Timer{
+                    running:scene.running
+                    interval: 16
+                    repeat: true
+                    onTriggered: scrollItem.offsetX +=0.02
+                }
+            }
         }
-
-//        Pipe{
-//            x:50;y:50;
-//            height: 200
-//            headUp: true
-//        }
 
         Birdy{
             id:bird
-            x:100; y:-100;
-            clip:true
-            world: scene.world
+            x:200; y:200;
         }
+
+        DoublePipe{
+            id:dp
+            bodyX:scene.width + 10
+            onTouched: scene.running = false
+            //updateInterval: 16
+
+            Timer{
+                running:scene.running
+                interval: 16
+                repeat: true
+                onTriggered: dp.bodyX-= 1.5
+            }
+
+            height: parent.height
+            gapY: 100
+            gapHeight: 100
+        }
+
         Floor{
             id:floor
             width: parent.width
             height:112
             anchors.left: scene.left
             anchors.bottom: scene.bottom
-            world: scene.world
-            scene:scene
-            onTouchedFloor: console.log("Touched" + other)
+            scene: scene
         }
 
         Keys.onUpPressed: {
