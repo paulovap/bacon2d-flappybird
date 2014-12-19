@@ -11,7 +11,7 @@ import Bacon2D 1.0
 
 Entity{
     id:root
-    width:50;height:50
+    width:60;height:50
     transformOrigin: Item.TopLeft
 
 
@@ -28,7 +28,6 @@ Entity{
         bodyType: Body.Dynamic
     }
 
-    //Actions
     function jump(){
         state = "jumping"
         circleBody.applyLinearImpulse(Qt.point(0,-4),

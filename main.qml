@@ -34,13 +34,19 @@ Game{
         physics: true
         gravity: Qt.point(0,9.8)
         pixelsPerMeter:18
-        running:false
+        Component.onCompleted: running = false
 
+        /*
+          sky blue background
+         */
         Rectangle{
             anchors.fill: parent
             color:"#4ec0ca"
         }
 
+        /*
+           parallax part of background. Cities and clouds
+         */
         InfiniteScrollItem{
             id:scrollItem
             anchors{
@@ -60,9 +66,12 @@ Game{
             }
         }
 
+        /*
+          player entity
+         */
         Birdy{
             id:bird
-            x:200; y:200;
+            x:50; y:200;
         }
 
         DoublePipe{
@@ -93,7 +102,21 @@ Game{
         }
 
         Keys.onUpPressed: {
+            scene.running = true
             bird.jump()
+        }
+
+        Image{
+            source:"img/splash.png"
+            visible: !scene.running
+            anchors{
+                centerIn: parent
+                verticalCenterOffset: -20
+            }
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: scene.running = true
         }
     }
 
