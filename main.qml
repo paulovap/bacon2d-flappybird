@@ -19,7 +19,6 @@ Game{
     states: [
         State {
             name: "over"
-
             PropertyChanges {
                 target: textGameOver
                 opacity: 1
@@ -28,97 +27,28 @@ Game{
         }
     ]
 
-    Scene{
+    MainScene{
         id:scene
         width: parent.width; height:parent.height
-        physics: true
-        gravity: Qt.point(0,9.8)
-        pixelsPerMeter:18
-        Component.onCompleted: running = false
-
-        /*
-          sky blue background
-         */
-        Rectangle{
-            anchors.fill: parent
-            color:"#4ec0ca"
-        }
-
-        /*
-           parallax part of background. Cities and clouds
-         */
-        InfiniteScrollItem{
-            id:scrollItem
-            anchors{
-                bottom:parent.bottom; bottomMargin: floor.height;
-                horizontalCenter: parent.horizontalCenter}
-            Image{
-                scale:1
-                width:scene.width
-                source: "img/sky.png"
-                fillMode: Image.Tile
-                Timer{
-                    running:scene.running
-                    interval: 16
-                    repeat: true
-                    onTriggered: scrollItem.offsetX +=0.02
-                }
-            }
-        }
-
-        /*
-          player entity
-         */
-        Birdy{
-            id:bird
-            x:50; y:200;
-        }
-
-        DoublePipe{
-            id:dp
-            bodyX:scene.width + 10
-            onTouched: scene.running = false
-            //updateInterval: 16
-
-            Timer{
-                running:scene.running
-                interval: 16
-                repeat: true
-                onTriggered: dp.bodyX-= 1.5
-            }
-
-            height: parent.height
-            gapY: 100
-            gapHeight: 100
-        }
-
-        Floor{
-            id:floor
-            width: parent.width
-            height:112
-            anchors.left: scene.left
-            anchors.bottom: scene.bottom
-            scene: scene
-        }
-
-        Keys.onUpPressed: {
-            scene.running = true
-            bird.jump()
-        }
-
-        Image{
-            source:"img/splash.png"
-            visible: !scene.running
-            anchors{
-                centerIn: parent
-                verticalCenterOffset: -20
-            }
-        }
-        MouseArea{
-            anchors.fill: parent
-            onClicked: scene.running = true
-        }
     }
 
+    Image{
+        source:"img/splash.png"
+        visible: !scene.running
+        anchors{
+            centerIn: parent
+            verticalCenterOffset: -20
+        }
+        z:2
+    }
+    MouseArea{
+        anchors.fill: parent
+        onClicked: if(gameState == Bacon2D.Suspended){
+                       scene.reset()
+                       gameState = Bacon2D.Running
+                   }
+
+        z:2
+    }
 }
 

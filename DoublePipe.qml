@@ -23,5 +23,11 @@ Entity{
         headUp: true
         onTouched: root.touched(other)
     }
+
+    behavior: ScriptBehavior{
+        script: {
+            root.bodyX-= 1.5
+        }
+    }
 }
 

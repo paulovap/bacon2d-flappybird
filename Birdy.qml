@@ -37,6 +37,7 @@ Entity{
     Sprite {
         id: birdy
         anchors.fill: parent
+        spriteState: scene.running ? Bacon2D.Running : Bacon2D.Paused
         property bool jumping: false
 
         animation:  "flying"
@@ -57,7 +58,6 @@ Entity{
                 name: "flying"
                 source: "img/bird_sprite.png"
                 frames: 3
-                running:true
                 duration: 400
                 loops: Animation.Infinite
             }
