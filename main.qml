@@ -32,6 +32,8 @@ Game{
         width: parent.width; height:parent.height
     }
 
+
+
     Image{
         source:"img/splash.png"
         visible: !scene.running
@@ -39,15 +41,6 @@ Game{
             centerIn: parent
             verticalCenterOffset: -20
         }
-        z:2
-    }
-    MouseArea{
-        anchors.fill: parent
-        onClicked: if(gameState == Bacon2D.Suspended){
-                       scene.reset()
-                       gameState = Bacon2D.Running
-                   }
-
         z:2
     }
 }

@@ -3,13 +3,33 @@ import Bacon2D 1.0
 
 Scene{
     id:scene
+
+    property var pipes: []
+
+    state: "newgame"
+    states:[
+        State{
+            name:"newgame"
+            StateChangeScript{ script:reset() }
+        },
+        State{
+            name:"endgame"
+        }
+    ]
+
     physics: true
     gravity: Qt.point(0,9.8)
     pixelsPerMeter:18
 
+    Keys.onUpPressed: bird.jump()
+
     function reset(){
         bird.x = 50;
         bird.y = 200;
+        game.gameState = Bacon2D.Running
+
+        pipes.forEach(function(pipe){ pipe.destroy() });
+        pipes = []
     }
 
     /*
@@ -41,15 +61,16 @@ Scene{
             }
         }
     }
-
+    Score{
+        x:0;y:0
+        score: 11
+    }
     /*
       player entity
      */
     Birdy{
         id:bird
         x:50; y:200;
-
-
     }
 
     Component{
@@ -58,7 +79,6 @@ Scene{
             id:dp
             bodyX:scene.width + 10
             onTouched: scene.game.gameState = Bacon2D.Suspended
-            //updateInterval: 16
             height: parent.height
             gapY: 100
             gapHeight: 100
@@ -67,36 +87,33 @@ Scene{
 
     Floor{
         id:floor
-        width: parent.width
-        height:112
-        z:2
+
         anchors.left: scene.left
         anchors.bottom: scene.bottom
+
+        width: parent.width; height:112
         scene: scene
+        z:2
+
         onTouchedFloor: game.gameState = Bacon2D.Suspended
     }
 
-    Keys.onUpPressed: {
-        //scene.running = true
-        bird.jump()
-    }
-
     Timer{
-        property var pipes: []
+
         id:pipeGenerator
-        interval:1250
-        repeat: true
+        interval:1250; repeat: true
         running:scene.running
+
         onTriggered: {
             var pipe = pipeComponent.createObject(scene, {gapY:100})
             pipes.push(pipe)
         }
-        onRunningChanged: if(running == false){
-                              reset()
-                              pipes.forEach(function(pipe) {
-                                  pipe.destroy()
-                              });
-                              pipes = []
-                          }
+    }
+
+    MultiPointTouchArea{
+        anchors.fill: parent
+        maximumTouchPoints: 1
+        mouseEnabled: true
+        onPressed: if(scene.running) bird.jump(); else reset();
     }
 }
