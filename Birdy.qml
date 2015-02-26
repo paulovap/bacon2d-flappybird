@@ -30,8 +30,8 @@ Entity{
 
     function jump(){
         state = "jumping"
-        circleBody.applyLinearImpulse(Qt.point(0,-4),
-                        circleBody.getWorldCenter());
+        var oldVel = circleBody.linearVelocity
+        circleBody.linearVelocity = Qt.point(oldVel.x, -4)
     }
 
     Sprite {

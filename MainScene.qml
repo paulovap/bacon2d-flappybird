@@ -30,6 +30,7 @@ Scene{
 
         pipes.forEach(function(pipe){ pipe.destroy() });
         pipes = []
+        scoreItem.score = 0
     }
 
     /*
@@ -61,9 +62,15 @@ Scene{
             }
         }
     }
+
     Score{
-        x:0;y:0
-        score: 11
+        id:scoreItem
+        anchors{
+            horizontalCenter: parent.horizontalCenter;
+            top:parent.top; topMargin: 20
+        }
+        score: 0
+        z:10
     }
     /*
       player entity
@@ -77,11 +84,19 @@ Scene{
         id:pipeComponent
         DoublePipe{
             id:dp
+            property bool passed: false
             bodyX:scene.width + 10
             onTouched: scene.game.gameState = Bacon2D.Suspended
             height: parent.height
             gapY: 100
             gapHeight: 100
+
+            onBodyXChanged: {
+                if(bodyX  < bird.x && !passed){
+                    scoreItem.score++
+                    passed = true
+                }
+            }
         }
     }
 
@@ -101,11 +116,11 @@ Scene{
     Timer{
 
         id:pipeGenerator
-        interval:1250; repeat: true
+        interval:2500; repeat: true
         running:scene.running
 
         onTriggered: {
-            var pipe = pipeComponent.createObject(scene, {gapY:100})
+            var pipe = pipeComponent.createObject(scene, {gapY:60 + Math.floor(Math.random()*10)*0.1*80})
             pipes.push(pipe)
         }
     }
